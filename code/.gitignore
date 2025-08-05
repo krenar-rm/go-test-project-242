@@ -1,0 +1,15 @@
+*.exe
+*.out
+*.test
+/hexlet-path-size
+
+/bin/*
+!/bin/.gitkeep
+
+/dist/
+
+/coverage.out
+
+.vscode/
+.idea/
+*.swp

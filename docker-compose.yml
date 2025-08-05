@@ -1,0 +1,9 @@
+---
+
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - .:/project
+    command: make test lint

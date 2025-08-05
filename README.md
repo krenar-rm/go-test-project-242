@@ -1,2 +1,18 @@
-### Hexlet tests and linter status:
-[![Actions Status](https://github.com/krenar-rm/go-test-project-242/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/krenar-rm/go-test-project-242/actions)
+## Структура
+
+Репозиторий заканчивается на *_project*.
+
+* \_\_data\_\_/spec.yml – описание проекта
+* \_\_data\_\_/steps/ – описание шагов проекта
+* \_\_data\_\_/image.png – картинка проекта
+* Makefile – содержит команды, на которые ориентируется система автоматической проверки
+* docker-compose.yml и Dockerfile для упаковки
+* code – директория с кодом проекта
+* tests – директория с тестами, которая использует code как пакет
+
+1. Утилита выводит размер переданной директории `hexlet-path-size <path>`.
+1. Добавляется флаг рекурсивного обхода.
+1. Подключается https://cli.urfave.org/.
+1. Добавляются тесты.
+1. Добавляется флаг -h.
+1. Добавляется вывод как списка (файлы и папки с указанием размера) или дерева (если указан флаг рекурсивности)
