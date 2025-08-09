@@ -1,18 +1,55 @@
-## Структура
+## Overview
 
-Репозиторий заканчивается на *_project*.
+hexlet-path-size is a CLI utility to calculate the size of files or directories. It supports recursive size calculation, human-readable formats, and inclusion of hidden files.
 
-* \_\_data\_\_/spec.yml – описание проекта
-* \_\_data\_\_/steps/ – описание шагов проекта
-* \_\_data\_\_/image.png – картинка проекта
-* Makefile – содержит команды, на которые ориентируется система автоматической проверки
-* docker-compose.yml и Dockerfile для упаковки
-* code – директория с кодом проекта
-* tests – директория с тестами, которая использует code как пакет
+## Features
 
-1. Утилита выводит размер переданной директории `hexlet-path-size <path>`.
-1. Добавляется флаг рекурсивного обхода.
-1. Подключается https://cli.urfave.org/.
-1. Добавляются тесты.
-1. Добавляется флаг -h.
-1. Добавляется вывод как списка (файлы и папки с указанием размера) или дерева (если указан флаг рекурсивности)
+- **Recursive Size Calculation**: Calculate the size of all nested files and directories.
+- **Human-Readable Format**: Display sizes in KB, MB, GB, etc.
+- **Include Hidden Files**: Optionally include hidden files and directories.
+
+## Usage
+
+### Basic Usage
+
+```bash
+hexlet-path-size <path>
+```
+
+### Options
+
+- `--recursive`, `-r`: Calculate size recursively for directories.
+- `--human`, `-H`: Display size in human-readable format.
+- `--all`, `-a`: Include hidden files and directories.
+
+### Examples
+
+```bash
+hexlet-path-size /path/to/directory
+hexlet-path-size /path/to/directory --recursive
+hexlet-path-size /path/to/directory --human
+hexlet-path-size /path/to/directory --recursive --all
+```
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository_url>
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd hexlet-path-size
+   ```
+3. Build the project:
+   ```bash
+   go build -o bin/hexlet-path-size main.go
+   ```
+
+## Testing
+
+Run tests using:
+
+```bash
+make test
+```
