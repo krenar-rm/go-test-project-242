@@ -21,7 +21,10 @@ func setupTestFile(t *testing.T, size int64) string {
 
 	f, err := os.Create(path)
 	require.NoError(t, err)
-	defer f.Close()
+	defer func() {
+		err := f.Close()
+		require.NoError(t, err)
+	}()
 
 	err = f.Truncate(size)
 	require.NoError(t, err)
