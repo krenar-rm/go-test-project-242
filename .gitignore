@@ -1,2 +1,8 @@
+bin/
 tmp/
-.idea
+dist/
+.idea/
+.vscode/
+*.test
+*.out
+coverage.txt
