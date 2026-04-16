@@ -114,7 +114,7 @@ func TestUnreadableDir(t *testing.T) {
 	require.NoError(t, os.Mkdir(sub, 0755))
 	require.NoError(t, os.WriteFile(filepath.Join(sub, "file.txt"), []byte("data"), 0644))
 	require.NoError(t, os.Chmod(sub, 0000))
-	t.Cleanup(func() { os.Chmod(sub, 0755) })
+	t.Cleanup(func() { _ = os.Chmod(sub, 0755) })
 
 	got, err := code.GetPathSize(dir, true, false, false)
 	require.NoError(t, err)
