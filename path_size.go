@@ -8,14 +8,12 @@ import (
 	"strings"
 )
 
-// Options описывает поведение подсчёта размера.
 type Options struct {
 	Recursive bool
 	Human     bool
 	All       bool
 }
 
-// GetPathSize возвращает отформатированный размер файла или директории.
 func GetPathSize(path string, opts Options) (string, error) {
 	info, err := os.Lstat(path)
 	if err != nil {
@@ -40,8 +38,6 @@ func computeSize(path string, info fs.FileInfo, opts Options) (int64, error) {
 	return shallowDirSize(path, opts.All)
 }
 
-// walkDirSize суммирует размеры файлов рекурсивно, пропуская скрытые
-// директории при необходимости.
 func walkDirSize(root string, includeHidden bool) (int64, error) {
 	var total int64
 	err := filepath.WalkDir(root, func(p string, d fs.DirEntry, err error) error {
@@ -72,7 +68,6 @@ func walkDirSize(root string, includeHidden bool) (int64, error) {
 	return total, err
 }
 
-// shallowDirSize считает только файлы первого уровня директории.
 func shallowDirSize(root string, includeHidden bool) (int64, error) {
 	entries, err := os.ReadDir(root)
 	if err != nil {
@@ -106,8 +101,6 @@ var sizeUnits = []struct {
 	{1 << 10, "KB"},
 }
 
-// formatBytes преобразует число байт в строку. Если human=true,
-// подбирается ближайшая единица измерения.
 func formatBytes(n int64, human bool) string {
 	if !human {
 		return fmt.Sprintf("%dB", n)
