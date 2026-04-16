@@ -1,30 +1,21 @@
 # hexlet-path-size
 
-CLI utility for computing the size of a file or directory.
-
-## Demo
+[![CI](https://github.com/krenar-rm/go-test-project-242/actions/workflows/ci.yml/badge.svg)](https://github.com/krenar-rm/go-test-project-242/actions/workflows/ci.yml)
+![Coverage](.github/badges/coverage.svg)
 
 [![asciicast](https://asciinema.org/a/Vo0Iixk524cQ80yw.svg)](https://asciinema.org/a/Vo0Iixk524cQ80yw)
 
-## Installation
+CLI-утилита для подсчёта размера файла или директории.
+
+Поддерживает рекурсивный обход, скрытые файлы и человекочитаемый формат вывода.
+
+## Сборка
 
 ```bash
 make build
 ```
 
-## Usage
-
-```bash
-./bin/hexlet-path-size <path> [options]
-```
-
-**Flags:**
-
-- `-r`, `--recursive` — calculate sizes recursively
-- `-H`, `--human` — human readable format (KB, MB, GB)
-- `-a`, `--all` — include hidden files
-
-## Examples
+## Использование
 
 ```bash
 ./bin/hexlet-path-size README.md
@@ -32,10 +23,9 @@ make build
 ./bin/hexlet-path-size -r -H -a /some/path
 ```
 
-## Development
+## Разработка
 
 ```bash
-make test    # run tests
-make lint    # run linter
-make clean   # remove build artifacts
+make test
+make lint
 ```
