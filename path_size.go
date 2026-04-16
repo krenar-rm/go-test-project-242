@@ -1,4 +1,4 @@
-package pathsize
+package code
 
 import (
 	"fmt"
@@ -8,34 +8,28 @@ import (
 	"strings"
 )
 
-type Options struct {
-	Recursive bool
-	Human     bool
-	All       bool
-}
-
-func GetPathSize(path string, opts Options) (string, error) {
+func GetPathSize(path string, recursive, human, all bool) (string, error) {
 	info, err := os.Lstat(path)
 	if err != nil {
 		return "", fmt.Errorf("stat %s: %w", path, err)
 	}
 
-	bytes, err := computeSize(path, info, opts)
+	bytes, err := computeSize(path, info, recursive, all)
 	if err != nil {
 		return "", err
 	}
 
-	return formatBytes(bytes, opts.Human), nil
+	return formatBytes(bytes, human), nil
 }
 
-func computeSize(path string, info fs.FileInfo, opts Options) (int64, error) {
+func computeSize(path string, info fs.FileInfo, recursive, all bool) (int64, error) {
 	if !info.IsDir() {
 		return info.Size(), nil
 	}
-	if opts.Recursive {
-		return walkDirSize(path, opts.All)
+	if recursive {
+		return walkDirSize(path, all)
 	}
-	return shallowDirSize(path, opts.All)
+	return shallowDirSize(path, all)
 }
 
 func walkDirSize(root string, includeHidden bool) (int64, error) {

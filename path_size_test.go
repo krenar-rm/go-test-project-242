@@ -1,11 +1,11 @@
-package pathsize_test
+package code_test
 
 import (
 	"os"
 	"path/filepath"
 	"testing"
 
-	pathsize "hexlet-path-size"
+	"code"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -29,7 +29,7 @@ func TestSingleFile(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := pathsize.GetPathSize(filepath.Join(fixtureDir, tt.path), pathsize.Options{Human: tt.human})
+			got, err := code.GetPathSize(filepath.Join(fixtureDir, tt.path), false, tt.human, false)
 			require.NoError(t, err)
 			assert.Equal(t, tt.expected, got)
 		})
@@ -37,13 +37,13 @@ func TestSingleFile(t *testing.T) {
 }
 
 func TestDirectoryNonRecursive(t *testing.T) {
-	got, err := pathsize.GetPathSize(filepath.Join(fixtureDir, "nested"), pathsize.Options{Recursive: false})
+	got, err := code.GetPathSize(filepath.Join(fixtureDir, "nested"), false, false, false)
 	require.NoError(t, err)
 	assert.Equal(t, "10B", got)
 }
 
 func TestDirectoryRecursive(t *testing.T) {
-	got, err := pathsize.GetPathSize(filepath.Join(fixtureDir, "nested"), pathsize.Options{Recursive: true})
+	got, err := code.GetPathSize(filepath.Join(fixtureDir, "nested"), true, false, false)
 	require.NoError(t, err)
 	assert.Equal(t, "30B", got)
 }
@@ -51,28 +51,28 @@ func TestDirectoryRecursive(t *testing.T) {
 func TestHiddenFiles(t *testing.T) {
 	dir := filepath.Join(fixtureDir, "special")
 
-	got, err := pathsize.GetPathSize(dir, pathsize.Options{Recursive: true, All: false})
+	got, err := code.GetPathSize(dir, true, false, false)
 	require.NoError(t, err)
 	assert.Equal(t, "29B", got)
 
-	got, err = pathsize.GetPathSize(dir, pathsize.Options{Recursive: true, All: true})
+	got, err = code.GetPathSize(dir, true, false, true)
 	require.NoError(t, err)
 	assert.Equal(t, "43B", got)
 }
 
 func TestUnicodeFileName(t *testing.T) {
-	got, err := pathsize.GetPathSize(filepath.Join(fixtureDir, "special", "unicode_файл.txt"), pathsize.Options{})
+	got, err := code.GetPathSize(filepath.Join(fixtureDir, "special", "unicode_файл.txt"), false, false, false)
 	require.NoError(t, err)
 	assert.Equal(t, "13B", got)
 }
 
 func TestNonExistentPath(t *testing.T) {
-	_, err := pathsize.GetPathSize("/no/such/path", pathsize.Options{})
+	_, err := code.GetPathSize("/no/such/path", false, false, false)
 	assert.Error(t, err)
 }
 
 func TestEmptyDir(t *testing.T) {
-	got, err := pathsize.GetPathSize(t.TempDir(), pathsize.Options{Recursive: true})
+	got, err := code.GetPathSize(t.TempDir(), true, false, false)
 	require.NoError(t, err)
 	assert.Equal(t, "0B", got)
 }
@@ -85,7 +85,7 @@ func TestSymlink(t *testing.T) {
 	require.NoError(t, os.WriteFile(real, []byte("hello world"), 0644))
 	require.NoError(t, os.Symlink(real, link))
 
-	got, err := pathsize.GetPathSize(link, pathsize.Options{})
+	got, err := code.GetPathSize(link, false, false, false)
 	require.NoError(t, err)
 	assert.NotEmpty(t, got)
 }
@@ -114,7 +114,7 @@ func TestHumanUnits(t *testing.T) {
 		}
 		f.Close()
 
-		got, err := pathsize.GetPathSize(p, pathsize.Options{Human: true})
+		got, err := code.GetPathSize(p, false, true, false)
 		require.NoError(t, err)
 		assert.Equal(t, c.expected, got)
 	}

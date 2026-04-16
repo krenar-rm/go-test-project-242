@@ -1,11 +1,10 @@
 package main
 
 import (
+	"code"
 	"context"
 	"fmt"
 	"os"
-
-	pathsize "hexlet-path-size"
 
 	"github.com/urfave/cli/v3"
 )
@@ -47,13 +46,7 @@ func run(_ context.Context, cmd *cli.Command) error {
 	}
 	path := cmd.Args().First()
 
-	opts := pathsize.Options{
-		Recursive: cmd.Bool("recursive"),
-		Human:     cmd.Bool("human"),
-		All:       cmd.Bool("all"),
-	}
-
-	size, err := pathsize.GetPathSize(path, opts)
+	size, err := code.GetPathSize(path, cmd.Bool("recursive"), cmd.Bool("human"), cmd.Bool("all"))
 	if err != nil {
 		return err
 	}
