@@ -112,7 +112,7 @@ func TestHumanUnits(t *testing.T) {
 		if c.size > 0 {
 			require.NoError(t, f.Truncate(c.size))
 		}
-		f.Close()
+		require.NoError(t, f.Close())
 
 		got, err := code.GetPathSize(p, false, true, false)
 		require.NoError(t, err)
