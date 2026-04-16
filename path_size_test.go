@@ -90,6 +90,58 @@ func TestSymlink(t *testing.T) {
 	assert.NotEmpty(t, got)
 }
 
+func TestShallowDirWithHidden(t *testing.T) {
+	dir := filepath.Join(fixtureDir, "special")
+
+	got, err := code.GetPathSize(dir, false, false, false)
+	require.NoError(t, err)
+	assert.Equal(t, "29B", got)
+
+	got, err = code.GetPathSize(dir, false, false, true)
+	require.NoError(t, err)
+	assert.Equal(t, "36B", got)
+}
+
+func TestRecursiveHuman(t *testing.T) {
+	got, err := code.GetPathSize(filepath.Join(fixtureDir, "sizes"), true, true, false)
+	require.NoError(t, err)
+	assert.Equal(t, "3.6KB", got)
+}
+
+func TestUnreadableDir(t *testing.T) {
+	dir := t.TempDir()
+	sub := filepath.Join(dir, "noaccess")
+	require.NoError(t, os.Mkdir(sub, 0755))
+	require.NoError(t, os.WriteFile(filepath.Join(sub, "file.txt"), []byte("data"), 0644))
+	require.NoError(t, os.Chmod(sub, 0000))
+	t.Cleanup(func() { os.Chmod(sub, 0755) })
+
+	got, err := code.GetPathSize(dir, true, false, false)
+	require.NoError(t, err)
+	assert.Equal(t, "0B", got)
+}
+
+func TestShallowUnreadableFile(t *testing.T) {
+	dir := t.TempDir()
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "ok.txt"), []byte("hello"), 0644))
+
+	got, err := code.GetPathSize(dir, false, false, false)
+	require.NoError(t, err)
+	assert.Equal(t, "5B", got)
+}
+
+func TestSymlinkInDir(t *testing.T) {
+	dir := t.TempDir()
+	sub := filepath.Join(dir, "sub")
+	require.NoError(t, os.Mkdir(sub, 0755))
+	require.NoError(t, os.WriteFile(filepath.Join(sub, "a.txt"), []byte("aaa"), 0644))
+	require.NoError(t, os.Symlink(filepath.Join(sub, "a.txt"), filepath.Join(dir, "link.txt")))
+
+	got, err := code.GetPathSize(dir, true, false, false)
+	require.NoError(t, err)
+	assert.NotEmpty(t, got)
+}
+
 func TestHumanUnits(t *testing.T) {
 	cases := []struct {
 		size     int64
